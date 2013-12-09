@@ -3,7 +3,8 @@
   "version": "0.0.2",
   "main": "angular-carousel.js",
   "dependencies" : {
-    "angular": "1.2.0"
+    "angular": "1.2.0",
+    "modernizr": "~2.6.3"
   },
   "ignore": [
     "**/.*",
