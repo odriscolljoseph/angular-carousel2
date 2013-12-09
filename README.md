@@ -1,5 +1,8 @@
-# DEPRECATED
+# Updated
 
-This was an early experiment. It used to work, and might still work, but a more flexible and much better documented carousel directive developed by the Angular community can be found [here](https://github.com/revolunet/angular-carousel).
+Added functionality:
 
-## A powerful, performant, touch-friendly carousel for Angular.
+* Api accessible via `carousel` property of scope
+* Now uses 5 slides instead of 3
+* `ng-carousel-options` attribute can be used to set `speed`, `onChange` etc
+* Cross-browser compatability improved thanks to `Modernizr`
