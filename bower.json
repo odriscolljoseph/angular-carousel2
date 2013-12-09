@@ -1,9 +1,9 @@
 {
   "name": "angular-carousel",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "angular-carousel.js",
   "dependencies" : {
-    "angular": "1.0.6"
+    "angular": "1.2.0"
   },
   "ignore": [
     "**/.*",
