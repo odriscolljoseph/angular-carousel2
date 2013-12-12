@@ -243,6 +243,12 @@
                                     if (!frames[i].scope.$$phase) {
                                         frames[i].scope.$apply();
                                     }
+
+                                    if (i === 2) {
+                                        $(frames[i].element).addClass('current');
+                                    } else {
+                                        $(frames[i].element).removeClass('current');
+                                    }
                                 }
 
                                 if (!scope.$$phase) {
