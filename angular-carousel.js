@@ -35,7 +35,7 @@
                             listIdentifier = match[2];
 
                             if (attr.ngCarouselOptions !== undefined) {
-                                $.extend(defaults, scope.$eval(attr.ngCarouselOptions));
+                                angular.extend(defaults, scope.$eval(attr.ngCarouselOptions));
                             }
 
                             var transEndEventNames = {
@@ -99,10 +99,10 @@
                                 
                                 _linker(frame);
 
-                                $(frame.element).attr('data-index', i);
+                                angular.element(frame.element).attr('data-index', i);
 
                                 if (i === 2) {
-                                    $(frame.element).addClass('current');
+                                    angular.element(frame.element).addClass('current');
                                 }
                             }
 
@@ -150,8 +150,8 @@
                                 scope.carouselWidth = viewportWidth = container[0].clientWidth;
                                 scope.carouselHeight = viewportHeight = container[0].clientHeight;
 
-                                scope.slideWidth = frames[2].element.children().width();
-                                scope.slideHeight = frames[2].element.children().height();
+                                scope.slideWidth = frames[2].element.children().css('width');
+                                scope.slideHeight = frames[2].element.children().css('height');
 
                                 snapThreshold = Math.round(viewportWidth * defaults.snapThreshold);
                             }
@@ -245,9 +245,9 @@
                                     }
 
                                     if (i === 2) {
-                                        $(frames[i].element).addClass('current');
+                                        angular.element(frames[i].element).addClass('current');
                                     } else {
-                                        $(frames[i].element).removeClass('current');
+                                        angular.element(frames[i].element).removeClass('current');
                                     }
                                 }
 
@@ -327,12 +327,12 @@
 
                             var resizeEvent = 'onorientationchange' in $window ? 'orientationchange' : 'resize';
 
-                            $($window).on(resizeEvent+'.carousel', resize);
-                            $document.on('keydown.carousel', keyDown);
+                            angular.element($window).on(resizeEvent, resize);
+                            $document.on('keydown', keyDown);
 
                             scope.$on('$destroy', function(){
-                                $($window).off(resizeEvent+'.carousel', resize);
-                                $document.off('keydown.carousel', keyDown);
+                                angular.element($window).off(resizeEvent, resize);
+                                $document.off('keydown', keyDown);
                             });
 
                         };
