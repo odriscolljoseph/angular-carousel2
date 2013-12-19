@@ -1,6 +1,6 @@
 {
   "name": "angular-carousel2",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "main": "angular-carousel.js",
   "dependencies" : {
     "angular": ">= 1.2.4",
