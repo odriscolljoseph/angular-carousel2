@@ -8,12 +8,17 @@ Added functionality:
 * Cross-browser compatability improved thanks to `Modernizr`
 
 
-	<div ng-carousel="slide in slides" ng-carousel-options="{ onChange: 'onChangeSlide', clickSpeed: 500, keySpeed: 500 }">
+http://homerjam.github.io/angular-carousel/
 
-		<div class="slide">
 
-			<img src="{{slide.src}}" />
+```
+<div ng-carousel="slide in slides" ng-carousel-options="{ onChange: 'onChangeSlide', clickSpeed: 500, keySpeed: 500 }">
 
-		</div>
+	<div class="slide">
+
+		<img src="{{slide.src}}" />
 
 	</div>
+
+</div>
+```
