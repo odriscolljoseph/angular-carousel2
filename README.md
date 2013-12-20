@@ -8,8 +8,17 @@ Added functionality:
 * Cross-browser compatability improved thanks to `Modernizr`
 
 
+## Installation
+
+`bower install angular-carousel2`
+
+
+## Demo
+
 http://homerjam.github.io/angular-carousel/
 
+
+## Example
 
 ```
 <div ng-carousel="slide in slides" ng-carousel-options="{ onChange: 'onChangeSlide', clickSpeed: 500, keySpeed: 500 }">
