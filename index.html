@@ -2,13 +2,13 @@
 
 	<head>
 
-		<title>Angular Carousel</title>
+		<title>ng-carousel</title>
 
-		<link rel="stylesheet" type="text/css" href="styles.css">
+		<link rel="stylesheet" type="text/css" href="example/styles.css">
 
 	</head>
 
-	<body ng-app="CarouselApp" ng-controller="CarouselCtrl">
+	<body ng-app="ExampleApp" ng-controller="ExampleCtrl">
 
 		<div ng-carousel="slide in slides" ng-carousel-options="{ onChange: 'onChangeSlide', clickSpeed: 500, keySpeed: 500 }">
 
@@ -20,11 +20,24 @@
 
 		</div>
 
+		<ul class="controls">
+
+			<li ng-click="carousel.prevPage()">&#10094;</li>
+
+			<li ng-repeat="slide in slides"
+				ng-click="carousel.goToPage($index)"
+				ng-class="{active: $index == activeSlideIndex}"
+				ng-bind="$index"></li>
+
+			<li ng-click="carousel.nextPage()">&#10095;</li>
+
+		</ul>
+
 		<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.7.1/modernizr.min.js"></script>
 		<script type="text/javascript" src="http://code.angularjs.org/1.2.4/angular.min.js"></script>
 		<script type="text/javascript" src="http://code.angularjs.org/1.2.4/angular-touch.min.js"></script>
-		<script type="text/javascript" src="../angular-carousel.js"></script>
-		<script type="text/javascript" src="app.js"></script>
+		<script type="text/javascript" src="angular-carousel.js"></script>
+		<script type="text/javascript" src="example/app.js"></script>
 
 	</body>
 

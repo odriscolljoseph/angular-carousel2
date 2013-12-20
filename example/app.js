@@ -1,44 +1,24 @@
-/**
- * CarouselCtrl Module
- *
- * Description
- */
-angular.module('CarouselCtrl', []).controller('CarouselCtrl', ['$scope',
+angular.module('ExampleCtrl', []).controller('ExampleCtrl', ['$scope',
     function($scope) {
 
-        $scope.slides = [{
-            text: 'Slide 1',
-            color: '#C00'
-        }, {
-            text: 'Slide 2',
-            color: '#0C0'
-        }, {
-            text: 'Slide 3',
-            color: '#00C'
-        }, {
-            text: 'Slide 4',
-            color: '#CC0'
-        }, {
-            text: 'Slide 5',
-            color: '#0CC'
-        }, {
-            text: 'Slide 6',
-            color: '#C0C'
-        }, {
-            text: 'Slide 7',
-            color: '#CCC'
-        }];
+		$scope.activeSlideIndex = 0;
+
+        $scope.slides = [];
+
+        for (var i = 0; i < 10; i++) {
+
+            $scope.slides[i] = {
+                text: 'Slide ' + i,
+                color: '#' + ('000000' + Math.floor(Math.random()*16777215).toString(16)).slice(-6)
+            };
+
+        }
 
         $scope.onChangeSlide = function(i) {
-            console.log('Slide ', i);
+            $scope.activeSlideIndex = i;
         };
 
     }
 ]);
 
-/**
- *  CarouselApp Module
- *
- * Description
- */
-angular.module('CarouselApp', ['angular-carousel', 'CarouselCtrl']).config(function() {});
+angular.module('ExampleApp', ['angular-carousel', 'ExampleCtrl']).config(function() {});

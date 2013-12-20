@@ -3,6 +3,9 @@ body {
 	width: 100%;
 	height: 100%;
 	margin: 0;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
 }
 
 .carousel-container {
@@ -35,4 +38,23 @@ body {
 	height: 100%;
 	display: table-cell;
 	vertical-align: middle;
+}
+
+.controls {
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 5em;
+	text-align: center;
+	list-style: none;
+}
+
+.controls li {
+	display: inline-block;
+	cursor: pointer;
+	margin: 0 1em;
+}
+
+.controls li.active {
+	color: red;
 }

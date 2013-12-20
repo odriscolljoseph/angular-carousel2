@@ -1,14 +1,9 @@
 {
-  "name": "angular-carousel2",
-  "version": "0.0.5",
-  "main": "angular-carousel.js",
-  "dependencies" : {
-    "angular": ">= 1.2.4",
-    "modernizr": "~2.6.3"
-  },
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "components"
-  ]
+    "name": "angular-carousel2",
+    "version": "0.0.6",
+    "main": "angular-carousel.js",
+    "dependencies": {
+        "angular": ">= 1.2.4",
+        "modernizr": "~2.6.3"
+    }
 }
