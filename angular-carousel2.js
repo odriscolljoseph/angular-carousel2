@@ -2,9 +2,9 @@
 
     'use strict';
 
-    angular.module('angular-carousel', ['ngTouch']);
+    angular.module('angular-carousel2', ['ngTouch']);
 
-    angular.module('angular-carousel')
+    angular.module('angular-carousel2')
         .directive('ngCarousel', ['$swipe', '$timeout', '$log', '$window', '$document',
             function($swipe, $timeout, $log, $window, $document) {
                 return {
@@ -19,7 +19,8 @@
                                 speed: 500,
                                 clickSpeed: 500,
                                 keySpeed: 500,
-                                snapThreshold: 0.1
+                                snapThreshold: 0.1,
+                                prevClickDisabled: false
                             };
 
                             // Parse the values out of the attr value.
@@ -300,7 +301,7 @@
                                     var dist = Math.abs(x - startX);
 
                                     if (!moved) {
-                                        flipPage( coords.x < viewportWidth * 0.5 ? 'prev' : 'next', defaults.clickSpeed);
+                                        flipPage( coords.x < viewportWidth * 0.5 && !defaults.prevClickDisabled ? 'prev' : 'next', defaults.clickSpeed);
                                         return false;
                                     }
 

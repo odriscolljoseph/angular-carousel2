@@ -21,4 +21,4 @@ angular.module('ExampleCtrl', []).controller('ExampleCtrl', ['$scope',
     }
 ]);
 
-angular.module('ExampleApp', ['angular-carousel', 'ExampleCtrl']).config(function() {});
+angular.module('ExampleApp', ['angular-carousel2', 'ExampleCtrl']).config(function() {});
