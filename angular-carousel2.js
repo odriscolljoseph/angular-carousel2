@@ -151,8 +151,8 @@
                                 scope.carouselWidth = viewportWidth = container[0].clientWidth;
                                 scope.carouselHeight = viewportHeight = container[0].clientHeight;
 
-                                scope.slideWidth = frames[2].element.children().css('width');
-                                scope.slideHeight = frames[2].element.children().css('height');
+                                scope.slideWidth = parseInt(frames[2].element.children().css('width'));
+                                scope.slideHeight = parseInt(frames[2].element.children().css('height'));
 
                                 snapThreshold = Math.round(viewportWidth * defaults.snapThreshold);
                             }
