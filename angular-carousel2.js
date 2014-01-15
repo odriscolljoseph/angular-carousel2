@@ -48,31 +48,31 @@
                             var pfxTransitionEnd = transEndEventNames[Modernizr.prefixed('transition')];
                             var pfxTransitionDuration = Modernizr.prefixed('transitionDuration');
 
-                            var api = {
-                                goToPage: function(_page) {
-                                    pageIndex = _page;
+                            if(typeof scope.carousel !== 'object'){
+                                scope.carousel = {};
+                            }
 
-                                    setFramesPageId();
+                            scope.carousel.goToPage = function(_page) {
+                                pageIndex = _page;
 
-                                    flip();
-                                },
-                                nextPage: function(speed) {
-                                    if (scope[listIdentifier].length < 2) {
-                                        return false;
-                                    }
+                                setFramesPageId();
 
-                                    flipPage('next', speed !== undefined ? speed : defaults.speed);
-                                },
-                                prevPage: function(speed) {
-                                    if (scope[listIdentifier].length < 2) {
-                                        return false;
-                                    }
-
-                                    flipPage('prev', speed !== undefined ? speed : defaults.speed);
-                                }
+                                flip();
                             };
-                            
-                            scope.carousel = api;
+                            scope.carousel.nextPage = function(speed) {
+                                if (scope[listIdentifier].length < 2) {
+                                    return false;
+                                }
+
+                                flipPage('next', speed !== undefined ? speed : defaults.speed);
+                            };
+                            scope.carousel.prevPage = function(speed) {
+                                if (scope[listIdentifier].length < 2) {
+                                    return false;
+                                }
+
+                                flipPage('prev', speed !== undefined ? speed : defaults.speed);
+                            };
                             
                             var container = element.children();
                             var slider = container.children();
@@ -318,10 +318,10 @@
                             function keyDown(e) {
                                 switch (e.keyCode) {
                                     case 37:
-                                        api.prevPage(defaults.keySpeed);
+                                        scope.carousel.prevPage(defaults.keySpeed);
                                     break;
                                     case 39:
-                                        api.nextPage(defaults.keySpeed);
+                                        scope.carousel.nextPage(defaults.keySpeed);
                                     break;
                                 }
                             }
