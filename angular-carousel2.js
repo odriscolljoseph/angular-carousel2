@@ -48,7 +48,7 @@
                             var pfxTransitionEnd = transEndEventNames[Modernizr.prefixed('transition')];
                             var pfxTransitionDuration = Modernizr.prefixed('transitionDuration');
 
-                            if(typeof scope.carousel !== 'object'){
+                            if (typeof(scope.carousel) !== 'object') {
                                 scope.carousel = {};
                             }
 
@@ -73,15 +73,15 @@
 
                                 flipPage('prev', speed !== undefined ? speed : defaults.speed);
                             };
-                            
+
                             var container = element.children();
                             var slider = container.children();
-                            
+
                             // Empty out the slider.
                             var templateFrame = slider.children();
                             slider.children().remove();
                             slider.append('<!-- ngCarousel -->');
-                            
+
                             function _linker(frame) {
                                 linker(frame.scope, function(clone) {
                                     var frameClone = templateFrame.clone();
@@ -90,14 +90,14 @@
                                     frame.element = frameClone;
                                 });
                             }
-                            
+
                             // Holds the 'frames' that are reused.
                             var frames = [];
                             for (var i = 0; i < 5; i++) {
                                 var frame = {};
                                 frame.scope = scope.$new();
                                 frames.push(frame);
-                                
+
                                 _linker(frame);
 
                                 angular.element(frame.element).attr('data-index', i);
@@ -110,20 +110,27 @@
                             // Now the frames are ready. We need to position them and prepare the first few frames.
                             // The content loading is handled by Angular, when we change the valueIdentifier value on the scope of a frame.
 
-                            var page = 0; // The notional page in the infinite scrolling.
+                            var page; // The notional page in the infinite scrolling.
                             var pageIndex = 0; // The index of that page in the array.
 
+                            function init() {
+                                repositionFrames();
+
+                                setFramesPageId();
+
+                                flip();
+                            }
+
                             // Makes sure the 'left' values of all frames are set correctly.
+
                             function repositionFrames() {
+                                page = 0;
+
                                 frames[0].element.css('left', page * 100 - 200 + '%');
                                 frames[1].element.css('left', page * 100 - 100 + '%');
                                 frames[2].element.css('left', page * 100 + '%');
                                 frames[3].element.css('left', page * 100 + 100 + '%');
                                 frames[4].element.css('left', page * 100 + 200 + '%');
-
-                                setFramesPageId();
-
-                                flip();
                             }
 
                             function setFramesPageId() {
@@ -132,11 +139,11 @@
                                 frames[2].pageId = pageIndex;
                                 frames[3].pageId = pageIndex === scope[listIdentifier].length - 1 ? 0 : pageIndex + 1;
                                 frames[4].pageId = pageIndex === scope[listIdentifier].length - 1 ? 1 : pageIndex === scope[listIdentifier].length - 2 ? 0 : pageIndex + 2;
-                            }                                
+                            }
 
                             scope.$watch(listIdentifier, function(n) {
                                 if (n !== undefined) {
-                                    repositionFrames();
+                                    init();
                                 }
                             });
 
@@ -151,8 +158,8 @@
                                 scope.carouselWidth = viewportWidth = container[0].clientWidth;
                                 scope.carouselHeight = viewportHeight = container[0].clientHeight;
 
-                                scope.slideWidth = parseInt(frames[2].element.children().css('width'));
-                                scope.slideHeight = parseInt(frames[2].element.children().css('height'));
+                                scope.slideWidth = Number(parseFloat(frames[2].element.children().css('width')).toFixed(3));
+                                scope.slideHeight = Number(parseFloat(frames[2].element.children().css('height')).toFixed(3));
 
                                 snapThreshold = Math.round(viewportWidth * defaults.snapThreshold);
                             }
@@ -176,9 +183,11 @@
                                 this.splice(to, 0, this.splice(from, 1)[0]);
                             }
 
-                            function moveSlider(x) {
+                            function moveSlider(x, transDuration) {
+                                transDuration = transDuration || 0;
                                 sliderX = x;
                                 slider[0].style[Modernizr.prefixed('transform')] = 'translate(' + x + 'px, 0)';
+                                slider[0].style[pfxTransitionDuration] = transDuration + 'ms';
                             }
 
                             function flipPage(forceDir, speed) {
@@ -186,14 +195,14 @@
                                     case 'next':
                                         direction = -1;
                                         forceDir = true;
-                                    break;
+                                        break;
                                     case 'prev':
                                         direction = 1;
                                         forceDir = true;
-                                    break;
+                                        break;
                                     default:
                                         forceDir = false;
-                                    break;
+                                        break;
                                 }
 
                                 speed = speed !== undefined ? speed : defaults.speed;
@@ -203,7 +212,7 @@
 
                                     pageIndex = pageIndex === 0 ? scope[listIdentifier].length - 1 : pageIndex - 1;
 
-                                    moveFrame.apply(frames, [frames.length-1, 0]);
+                                    moveFrame.apply(frames, [frames.length - 1, 0]);
 
                                     frames[0].element.css('left', page * 100 - 200 + '%');
                                     frames[1].element.css('left', page * 100 - 100 + '%');
@@ -213,7 +222,7 @@
 
                                     pageIndex = pageIndex === scope[listIdentifier].length - 1 ? 0 : pageIndex + 1;
 
-                                    moveFrame.apply(frames, [0, frames.length-1]);
+                                    moveFrame.apply(frames, [0, frames.length - 1]);
 
                                     frames[3].element.css('left', page * 100 + 100 + '%');
                                     frames[4].element.css('left', page * 100 + 200 + '%');
@@ -225,13 +234,11 @@
 
                                 var transDuration = forceDir ? speed : Math.floor(speed * Math.abs(sliderX - newX) / viewportWidth);
 
-                                slider[0].style[pfxTransitionDuration] = transDuration + 'ms';
-
                                 if (sliderX === newX && !forceDir) {
                                     flip(); // If we swiped /exactly/ to the next page.
 
                                 } else {
-                                    moveSlider(newX);
+                                    moveSlider(newX, transDuration);
 
                                     $timeout(flip, transDuration);
                                 }
@@ -257,8 +264,14 @@
                                 }
 
                                 if (defaults.onChange !== '' && typeof(scope[defaults.onChange]) === 'function') {
-                                    $timeout(function(){
-                                        scope[defaults.onChange](pageIndex);                                        
+                                    $timeout(function() {
+                                        if (direction !== undefined) {
+                                            // reset frame positions (improves resizing performance)
+                                            repositionFrames();
+                                            moveSlider(0);
+                                        }
+
+                                        scope[defaults.onChange](pageIndex);
                                     }, 0);
                                 }
                             }
@@ -273,7 +286,7 @@
                                     startX = coords.x;
                                     pointX = coords.x;
                                     direction = 0;
-                                    slider[0].style[pfxTransitionDuration] = '0s';
+                                    slider[0].style[pfxTransitionDuration] = '0ms';
                                 },
 
                                 move: function(coords) {
@@ -301,7 +314,7 @@
                                     var dist = Math.abs(x - startX);
 
                                     if (!moved) {
-                                        flipPage( coords.x < viewportWidth * 0.5 && !defaults.prevClickDisabled ? 'prev' : 'next', defaults.clickSpeed);
+                                        flipPage(coords.x < viewportWidth * 0.5 && !defaults.prevClickDisabled ? 'prev' : 'next', defaults.clickSpeed);
                                         return false;
                                     }
 
@@ -319,10 +332,10 @@
                                 switch (e.keyCode) {
                                     case 37:
                                         scope.carousel.prevPage(defaults.keySpeed);
-                                    break;
+                                        break;
                                     case 39:
                                         scope.carousel.nextPage(defaults.keySpeed);
-                                    break;
+                                        break;
                                 }
                             }
 
@@ -331,7 +344,7 @@
                             angular.element($window).on(resizeEvent, resize);
                             $document.on('keydown', keyDown);
 
-                            scope.$on('$destroy', function(){
+                            scope.$on('$destroy', function() {
                                 angular.element($window).off(resizeEvent, resize);
                                 $document.off('keydown', keyDown);
                             });
