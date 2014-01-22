@@ -116,13 +116,14 @@
                             function init() {
                                 repositionFrames();
 
+                                moveSlider(0);
+
                                 setFramesPageId();
 
                                 flip();
                             }
 
                             // Makes sure the 'left' values of all frames are set correctly.
-
                             function repositionFrames() {
                                 page = 0;
 
@@ -176,6 +177,16 @@
                                 slider[0].style[pfxTransitionDuration] = '0s';
 
                                 moveSlider(-page * viewportWidth);
+                            }
+
+                            var resetTimeout;
+
+                            // reset left/translate positions (improves resizing performance)
+                            function reset() {
+                                if (direction !== undefined) {
+                                    repositionFrames();
+                                    moveSlider(0);
+                                }
                             }
 
                             function moveFrame(from, to) {
@@ -240,6 +251,9 @@
                                 } else {
                                     moveSlider(newX, transDuration);
 
+                                    $timeout.cancel(resetTimeout);
+                                    resetTimeout = $timeout(reset, transDuration);
+
                                     $timeout(flip, transDuration);
                                 }
                             }
@@ -265,12 +279,6 @@
 
                                 if (defaults.onChange !== '' && typeof(scope[defaults.onChange]) === 'function') {
                                     $timeout(function() {
-                                        if (direction !== undefined) {
-                                            // reset frame positions (improves resizing performance)
-                                            repositionFrames();
-                                            moveSlider(0);
-                                        }
-
                                         scope[defaults.onChange](pageIndex);
                                     }, 0);
                                 }

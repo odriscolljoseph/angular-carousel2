@@ -3,7 +3,7 @@
     "version": "0.0.8",
     "main": "angular-carousel2.js",
     "dependencies": {
-        "angular": ">= 1.2.4",
-        "modernizr": "~2.6.3"
+        "angular": "~1.2.8",
+        "modernizr": "~2.7.1"
     }
 }
