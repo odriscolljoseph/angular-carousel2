@@ -1,7 +1,7 @@
 {
-    "name": "angular-carousel2",
+    "name": "angular-carousel-odr",
     "version": "0.0.8",
-    "main": "angular-carousel2.js",
+    "main": "angular-carousel-odr.js",
     "dependencies": {
         "angular": "~1.2.8",
         "modernizr": "~2.7.1"

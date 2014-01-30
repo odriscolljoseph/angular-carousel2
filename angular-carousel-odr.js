@@ -2,9 +2,9 @@
 
     'use strict';
 
-    angular.module('angular-carousel2', ['ngTouch']);
+    angular.module('angular-carousel-odr', ['ngTouch']);
 
-    angular.module('angular-carousel2')
+    angular.module('angular-carousel-odr')
         .directive('ngCarousel', ['$swipe', '$timeout', '$log', '$window', '$document',
             function($swipe, $timeout, $log, $window, $document) {
                 return {
@@ -20,7 +20,9 @@
                                 clickSpeed: 500,
                                 keySpeed: 500,
                                 snapThreshold: 0.1,
-                                prevClickDisabled: false
+                                prevClickDisabled: false,
+                                autoCycle: false,
+                                cycleDelay: false
                             };
 
                             // Parse the values out of the attr value.
@@ -74,6 +76,14 @@
                                 flipPage('prev', speed !== undefined ? speed : defaults.speed);
                             };
 
+                            scope.carousel.pauseCycle = function() {
+                                $timeout.cancel(scope.auto_cycle);
+                            };
+
+                            scope.carousel.autoCycle = function() {
+                                autoCycle();
+                            };
+
                             var container = element.children();
                             var slider = container.children();
 
@@ -121,6 +131,10 @@
                                 setFramesPageId();
 
                                 flip();
+
+                                if (defaults.autoCycle) {
+                                    autoCycle();
+                                }
                             }
 
                             // Makes sure the 'left' values of all frames are set correctly.
@@ -346,6 +360,14 @@
                                         break;
                                 }
                             }
+
+                            function autoCycle() {
+                                var delay = defaults.cycleDelay ? defaults.cycleDelay : defaults.speed;
+                                scope.auto_cycle = $timeout(function(){
+                                    scope.carousel.nextPage();
+                                    autoCycle();
+                                },delay);
+                            };
 
                             var resizeEvent = 'onorientationchange' in $window ? 'orientationchange' : 'resize';
 

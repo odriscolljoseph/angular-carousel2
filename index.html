@@ -2,7 +2,7 @@
 
 	<head>
 
-		<title>angular-carousel2</title>
+		<title>angular-carousel-odr</title>
 
 		<link rel="stylesheet" type="text/css" href="example/styles.css">
 
@@ -10,9 +10,9 @@
 
 	<body ng-app="ExampleApp" ng-controller="ExampleCtrl">
 
-		<div ng-carousel="slide in slides" ng-carousel-options="{ onChange: 'onChangeSlide', clickSpeed: 500, keySpeed: 500 }">
+		<div ng-carousel="slide in slides" ng-carousel-options="{ onChange: 'onChangeSlide', clickSpeed: 500, keySpeed: 500, autoCycle: true, cycleDelay: 1000 }">
 
-			<div class="slide" style="background-color: {{slide.color}}">
+			<div class="slide" style="background-color: {{slide.color}}" ng-mouseenter="pauseCycle()" ng-mouseleave="restartCycle()">
 
 				<h1 ng-bind="slide.text"></h1>
 
@@ -36,7 +36,7 @@
 		<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.7.1/modernizr.min.js"></script>
 		<script type="text/javascript" src="http://code.angularjs.org/1.2.8/angular.min.js"></script>
 		<script type="text/javascript" src="http://code.angularjs.org/1.2.8/angular-touch.min.js"></script>
-		<script type="text/javascript" src="angular-carousel2.js"></script>
+		<script type="text/javascript" src="angular-carousel-odr.js"></script>
 		<script type="text/javascript" src="example/app.js"></script>
 
 	</body>

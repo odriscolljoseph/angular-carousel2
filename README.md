@@ -1,4 +1,4 @@
-# angular-carousel2
+# angular-carousel-odr
 
 A carousel directive for angularjs
 
@@ -9,12 +9,12 @@ A carousel directive for angularjs
 
 ## Installation
 
-`bower install angular-carousel2`
+`bower install angular-carousel-odr`
 
 
 ## Demo
 
-http://homerjam.github.io/angular-carousel2/
+http://odriscolljoseph.github.io/angular-carousel-odr/
 
 
 ## Example

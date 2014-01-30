@@ -18,7 +18,15 @@ angular.module('ExampleCtrl', []).controller('ExampleCtrl', ['$scope',
             $scope.activeSlideIndex = i;
         };
 
+        $scope.pauseCycle = function() {
+            $scope.carousel.pauseCycle();
+        };
+
+        $scope.restartCycle = function() {
+            $scope.carousel.autoCycle();
+        };
+
     }
 ]);
 
-angular.module('ExampleApp', ['angular-carousel2', 'ExampleCtrl']).config(function() {});
+angular.module('ExampleApp', ['angular-carousel-odr', 'ExampleCtrl']).config(function() {});
