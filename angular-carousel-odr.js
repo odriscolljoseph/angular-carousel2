@@ -362,6 +362,7 @@
                             }
 
                             function autoCycle() {
+                                $timeout.cancel(scope.auto_cycle);
                                 var delay = defaults.cycleDelay ? defaults.cycleDelay : defaults.speed;
                                 scope.auto_cycle = $timeout(function(){
                                     scope.carousel.nextPage();
