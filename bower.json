@@ -1,9 +1,10 @@
 {
-    "name": "angular-carousel-odr",
-    "version": "0.0.9",
-    "main": "angular-carousel-odr.js",
-    "dependencies": {
-        "angular": "~1.2.8",
-        "modernizr": "~2.7.1"
-    }
+  "name": "angular-carousel-odr",
+  "version": "0.0.9",
+  "main": "angular-carousel-odr.js",
+  "dependencies": {
+    "angular": "~1.2.8",
+    "modernizr": "~2.7.1"
+  },
+  "homepage": "https://github.com/odriscolljoseph/angular-carousel-odr"
 }
