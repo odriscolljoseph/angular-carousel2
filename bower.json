@@ -1,6 +1,6 @@
 {
     "name": "angular-carousel-odr",
-    "version": "0.0.8",
+    "version": "0.0.9",
     "main": "angular-carousel-odr.js",
     "dependencies": {
         "angular": "~1.2.8",
