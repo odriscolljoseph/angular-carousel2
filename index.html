@@ -10,7 +10,7 @@
 
 	<body ng-app="ExampleApp" ng-controller="ExampleCtrl">
 
-		<div ng-carousel="slide in slides" ng-carousel-options="{ onChange: 'onChangeSlide', clickSpeed: 500, keySpeed: 500, autoCycle: true, cycleDelay: 1000 }">
+		<div ng-carousel="slide in slides" ng-carousel-options="{ onChange: 'onChangeSlide', clickSpeed: 500, keySpeed: 500, cycle: {'delay': 2000} }">
 
 			<div class="slide" style="background-color: {{slide.color}}" ng-mouseenter="pauseCycle()" ng-mouseleave="restartCycle()">
 

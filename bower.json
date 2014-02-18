@@ -4,7 +4,8 @@
   "main": "angular-carousel-odr.js",
   "dependencies": {
     "angular": "~1.2.8",
-    "modernizr": "~2.7.1"
+    "modernizr": "~2.7.1",
+    "angular-swipe": "https://github.com/marmorkuchen-net/angular-swipe.git"
   },
   "homepage": "https://github.com/odriscolljoseph/angular-carousel-odr"
 }

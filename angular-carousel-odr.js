@@ -2,11 +2,11 @@
 
     'use strict';
 
-    angular.module('angular-carousel-odr', ['ngTouch']);
+    angular.module('angular-carousel-odr', ['swipe']);
 
     angular.module('angular-carousel-odr')
-        .directive('ngCarousel', ['$swipe', '$timeout', '$log', '$window', '$document',
-            function($swipe, $timeout, $log, $window, $document) {
+        .directive('ngCarousel', ['swipe', '$timeout', '$log', '$window', '$document',
+            function(swipe, $timeout, $log, $window, $document) {
                 return {
                     restrict: 'AC',
                     transclude: true,
@@ -22,7 +22,8 @@
                                 snapThreshold: 0.1,
                                 prevClickDisabled: false,
                                 autoCycle: false,
-                                cycleDelay: false
+                                cycleDelay: false,
+                                vertical: false
                             };
 
                             // Parse the values out of the attr value.
@@ -141,11 +142,13 @@
                             function repositionFrames() {
                                 page = 0;
 
-                                frames[0].element.css('left', page * 100 - 200 + '%');
-                                frames[1].element.css('left', page * 100 - 100 + '%');
-                                frames[2].element.css('left', page * 100 + '%');
-                                frames[3].element.css('left', page * 100 + 100 + '%');
-                                frames[4].element.css('left', page * 100 + 200 + '%');
+                                var dir = defaults.vertical ? 'top' : 'left';
+
+                                frames[0].element.css(dir, page * 100 - 200 + '%');
+                                frames[1].element.css(dir, page * 100 - 100 + '%');
+                                frames[2].element.css(dir, page * 100 + '%');
+                                frames[3].element.css(dir, page * 100 + 100 + '%');
+                                frames[4].element.css(dir, page * 100 + 200 + '%');
                             }
 
                             function setFramesPageId() {
@@ -162,9 +165,10 @@
                                 }
                             });
 
-                            var startX, pointX;
-                            var sliderX = 0;
-                            var viewportWidth, viewportHeight, snapThreshold;
+                            var startX, pointX, startY, pointY;
+                            var sliderX = 0, sliderY = 0;
+                            var sliderPos = 0;
+                            var viewport, viewportWidth, viewportHeight, snapThreshold;
 
                             var moved = false;
                             var direction;
@@ -173,10 +177,12 @@
                                 scope.carouselWidth = viewportWidth = container[0].clientWidth;
                                 scope.carouselHeight = viewportHeight = container[0].clientHeight;
 
+                                viewport = defaults.vertical ? scope.carouselHeight : scope.carouselWidth;
+
                                 scope.slideWidth = Number(parseFloat(frames[2].element.children().css('width')).toFixed(3));
                                 scope.slideHeight = Number(parseFloat(frames[2].element.children().css('height')).toFixed(3));
 
-                                snapThreshold = Math.round(viewportWidth * defaults.snapThreshold);
+                                snapThreshold = Math.round(viewport * defaults.snapThreshold);
                             }
 
                             _resize();
@@ -190,7 +196,7 @@
 
                                 slider[0].style[pfxTransitionDuration] = '0s';
 
-                                moveSlider(-page * viewportWidth);
+                                moveSlider(-page * viewport);
                             }
 
                             var resetTimeout;
@@ -208,10 +214,19 @@
                                 this.splice(to, 0, this.splice(from, 1)[0]);
                             }
 
-                            function moveSlider(x, transDuration) {
+                            function moveSlider(pos, transDuration) {
                                 transDuration = transDuration || 0;
-                                sliderX = x;
-                                slider[0].style[Modernizr.prefixed('transform')] = 'translate(' + x + 'px, 0)';
+                                sliderPos = pos;
+                                if (defaults.vertical) {
+                                    sliderX = 0;
+                                    sliderY = pos;
+                                    slider[0].style[Modernizr.prefixed('transform')] = 'translate(0, ' + pos + 'px)';
+                                } else {
+                                    sliderX = pos;
+                                    sliderY = 0;
+                                    slider[0].style[Modernizr.prefixed('transform')] = 'translate(' + pos + 'px, 0)';
+                                }
+
                                 slider[0].style[pfxTransitionDuration] = transDuration + 'ms';
                             }
 
@@ -233,37 +248,48 @@
                                 speed = speed !== undefined ? speed : defaults.speed;
 
                                 if (direction > 0) {
-                                    page = forceDir ? page - 1 : -Math.ceil(sliderX / viewportWidth);
+                                    page = forceDir ? page - 1 : -Math.ceil(sliderPos / viewport);
 
                                     pageIndex = pageIndex === 0 ? scope[listIdentifier].length - 1 : pageIndex - 1;
 
                                     moveFrame.apply(frames, [frames.length - 1, 0]);
 
-                                    frames[0].element.css('left', page * 100 - 200 + '%');
-                                    frames[1].element.css('left', page * 100 - 100 + '%');
+                                    if (defaults.vertical) {
+                                        frames[0].element.css('top', page * 100 - 200 + '%');
+                                        frames[1].element.css('top', page * 100 - 100 + '%');
+                                    } else {
+                                        frames[0].element.css('left', page * 100 - 200 + '%');
+                                        frames[1].element.css('left', page * 100 - 100 + '%');
+                                    }
 
                                 } else {
-                                    page = forceDir ? page + 1 : -Math.floor(sliderX / viewportWidth);
+                                    page = forceDir ? page + 1 : -Math.floor(sliderPos / viewport);
 
                                     pageIndex = pageIndex === scope[listIdentifier].length - 1 ? 0 : pageIndex + 1;
 
                                     moveFrame.apply(frames, [0, frames.length - 1]);
 
-                                    frames[3].element.css('left', page * 100 + 100 + '%');
-                                    frames[4].element.css('left', page * 100 + 200 + '%');
+                                    if (defaults.vertical) {
+                                        frames[3].element.css('top', page * 100 + 100 + '%');
+                                        frames[4].element.css('top', page * 100 + 200 + '%');
+                                    } else {
+                                        frames[3].element.css('left', page * 100 + 100 + '%');
+                                        frames[4].element.css('left', page * 100 + 200 + '%');
+                                    }
+
                                 }
 
                                 setFramesPageId();
 
-                                var newX = -page * viewportWidth;
+                                var newPos = -page * viewport;
 
-                                var transDuration = forceDir ? speed : Math.floor(speed * Math.abs(sliderX - newX) / viewportWidth);
+                                var transDuration = forceDir ? speed : Math.floor(speed * Math.abs(sliderPos - newPos) / viewport);
 
-                                if (sliderX === newX && !forceDir) {
+                                if (sliderPos === newPos && !forceDir) {
                                     flip(); // If we swiped /exactly/ to the next page.
 
                                 } else {
-                                    moveSlider(newX, transDuration);
+                                    moveSlider(newPos, transDuration);
 
                                     $timeout.cancel(resetTimeout);
                                     resetTimeout = $timeout(reset, transDuration);
@@ -298,7 +324,7 @@
                                 }
                             }
 
-                            $swipe.bind(slider, {
+                            swipe.bind(slider, {
                                 start: function(coords) {
                                     if (scope[listIdentifier].length < 2) {
                                         return false;
@@ -307,6 +333,8 @@
                                     moved = false;
                                     startX = coords.x;
                                     pointX = coords.x;
+                                    startY = coords.y;
+                                    pointY = coords.y;
                                     direction = 0;
                                     slider[0].style[pfxTransitionDuration] = '0ms';
                                 },
@@ -318,13 +346,16 @@
 
                                     var deltaX = coords.x - pointX;
                                     var newX = sliderX + deltaX;
-                                    var dist = Math.abs(coords.x - startX);
+                                    var deltaY = coords.y - pointY;
+                                    var newY = sliderY + deltaY;
+                                    var dist = defaults.vertical ? Math.abs(coords.y - startY) : Math.abs(coords.x - startX);
 
                                     moved = true;
                                     pointX = coords.x;
-                                    direction = deltaX > 0 ? 1 : deltaX < 0 ? -1 : 0;
+                                    pointY = coords.y;
+                                    direction = defaults.vertical ? (deltaY > 0 ? 1 : deltaY < 0 ? -1 : 0) : (deltaX > 0 ? 1 : deltaX < 0 ? -1 : 0);
 
-                                    moveSlider(newX);
+                                    moveSlider(defaults.vertical ? newY : newX);
                                 },
 
                                 end: function(coords, e) {
@@ -333,16 +364,20 @@
                                     }
 
                                     var x = coords && coords.x || pointX;
-                                    var dist = Math.abs(x - startX);
+                                    var y = coords && coords.y || pointY;
+                                    var dist = defaults.vertical ? Math.abs(y - startY) : Math.abs(x - startX);
 
-                                    if (!moved) {
-                                        flipPage(coords.x < viewportWidth * 0.5 && !defaults.prevClickDisabled ? 'prev' : 'next', defaults.clickSpeed);
+                                    if (!moved && !defaults.vertical) {
+                                        flipPage(coords.x < viewport * 0.5 && !defaults.prevClickDisabled ? 'prev' : 'next', defaults.clickSpeed);
+                                        return false;
+                                    } else if (!moved && defaults.vertical) {
+                                        flipPage(coords.y < viewport * 0.5 && !defaults.prevClickDisabled ? 'prev' : 'next', defaults.clickSpeed);
                                         return false;
                                     }
 
                                     if (dist < snapThreshold) {
                                         slider[0].style[pfxTransitionDuration] = Math.floor(300 * dist / snapThreshold) + 'ms';
-                                        moveSlider(-page * viewportWidth);
+                                        moveSlider(-page * viewport);
 
                                     } else {
                                         flipPage();

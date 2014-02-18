@@ -23,7 +23,7 @@ angular.module('ExampleCtrl', []).controller('ExampleCtrl', ['$scope',
         };
 
         $scope.restartCycle = function() {
-            $scope.carousel.autoCycle();
+            $scope.carousel.cycle();
         };
 
     }
